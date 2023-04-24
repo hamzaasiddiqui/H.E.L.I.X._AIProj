@@ -95,37 +95,6 @@ nlu:
 
 
 
-
-
-
-- intent: take_snap
-  examples: |
-    - take a picture
-    - snap a picture
-    - open the camera
-    - use the camera to take a selfie
-
-- intent: register_new_user
-  examples: |
-    - register a new user
-    - register me as a new user
-    - open an account for me
-    - authorize me for the future
-    - I want to sign up for the app
-    - I need to register for the platform
-    - Can you help me create a new account?
-    - I'm a new user and need to register
-    - What information do you need to register me?
-    - How can I start the registration process?
-
-- intent: update_information
-  examples: |
-    - I need to update my profile information.
-    - How do I edit my account details?
-    - Can you help me change my information?
-    - How can I update my credentials?
-    - Change my name registered on this account.
-
 - intent: open_entertainment_long
   examples: |
     - Play [Breaking Bad](entertainment) on [Netflix](source)
@@ -152,3 +121,73 @@ nlu:
     - Stop the music
     - Pause the TV
     - Turn off the Television
+
+
+- intent: take_snap
+  examples: |
+    - take a picture
+    - snap a picture
+    - open the camera
+    - use the camera
+    - Can you take a picture of me?
+    - I need to capture this moment, can you take a photo?
+    - Take a snapshot, please.
+    - Can you snap a picture?
+    - I want to take a picture of this view.
+    - Take a photo of us, please.
+    - Could you capture this image for me?
+    - Take a selfie with me.
+    - Can you take a picture of the menu?
+    - Take a picture of the product I'm interested in. 
+
+- intent: register_new_user
+  examples: |
+    - register a new user
+    - register me as a new user
+    - open an account for me
+    - authorize me for the future
+    - I want to sign up for the app
+    - I need to register for the platform
+    - Can you help me create a new account?
+    - I'm a new user and need to register
+    - What information do you need to register me?
+    - How can I start the registration process?
+
+- intent: update_information
+  examples: |
+    - I need to update my profile information.
+    - How do I edit my account details?
+    - Can you help me change my information?
+    - How can I update my credentials?
+    - Change my name registered on this account.
+
+- intent: set_alarm
+  examples: |
+    - Set an alarm for [6 AM](time).
+    - Can you set my alarm for [7:30 in the morning](time), please?
+    - I need to wake up at [8 o'clock](time), can you set an alarm for me?
+    - Please set an alarm for [9:15 AM](time).
+    - I want to wake up at [5:45 in the morning](time), can you set the alarm for me?
+    - Set an alarm for [7 PM](time), please.
+    - Can you schedule an alarm for [10:30 AM](time), please?
+    - Please set the alarm for [6:45 in the morning](time).
+    - I want to set an alarm for [5:15 AM](time), can you help me with that?
+    - Set an alarm for [11:15 PM](time) tonight.
+
+- intent: set_thermostat
+  examples: |
+
+- intent: dec_thermostat
+  examples: |
+
+- intent: inc_thermostat
+  examples: |
+
+- intent: check_air_purification
+  examples: |
+
+- intent: schedule_boiler
+  examples: |
+
+- intent: smart_payment
+  examples: |
