@@ -137,8 +137,7 @@ nlu:
     - Take a photo of us, please.
     - Could you capture this image for me?
     - Take a selfie with me.
-    - Can you take a picture of the menu?
-    - Take a picture of the product I'm interested in. 
+    - Take a picture.
 
 - intent: register_new_user
   examples: |

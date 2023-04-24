@@ -28,15 +28,18 @@ Training stories more'''
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-from sqlalchemy import create_engine, update, MetaData, Table, Column, Integer, VARCHAR, text
-#from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import create_engine, update, MetaData, Table, Column, Integer, VARCHAR, text, Float, select
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.engine import result
 
 engine = create_engine('postgresql://postgres:sys@localhost/helix')
+connection = engine.connect()
 meta = MetaData(bind=engine)
 MetaData.reflect(meta)
+db = scoped_session(sessionmaker(bind=engine))
 
 user = Table(
     'user', meta,
@@ -62,6 +65,17 @@ smart_tv = Table(
     extend_existing=True
 )
 
+thermostat = Table(
+    'thermostat', meta,
+    Column('t_temp', Float),
+    extend_existing=True
+)
+
+alarm = Table(
+    'alarm', meta,
+    Column('a_time', VARCHAR)
+)
+
 meta.create_all(engine)
 
 u1 = user.insert().values(u_id=1, u_name='Farae')
@@ -79,6 +93,11 @@ d2 = device.insert().values(d_id=2, d_type='Door', d_value=0)
 
 tv = smart_tv.insert().values(s_app="None", s_search="None", s_running=0)
 #engine.execute(tv)
+
+therm = thermostat.insert().values(t_temp='25.0')
+#engine.execute(therm)
+
+
 
 class ActLockDoor(Action):
     def name(self) -> Text:
@@ -178,3 +197,84 @@ class ActCloseEntertainment(Action):
         dispatcher.utter_message(text=msg)
 
         return []
+    
+class ActSetThermostat(Action):
+    def name(self) -> Text:
+        return "act_set_thermostat"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        temperature = tracker.get_slot("temperature")
+
+        if temperature is None:
+            dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
+            return []
+        #query = select([thermostat])
+        #ResultProxy = connection.execute(query)
+        #ResultSet = ResultProxy.fetchone()
+        update_therm = thermostat.update().values(t_temp=temperature)
+        engine.execute(update_therm)
+        msg = f"Updated the temperature of the thermostat to {temperature}"
+        dispatcher.utter_message(text=msg)
+
+        return []
+    
+class ActDecreaseThermostat(Action):
+    def name(self) -> Text:
+        return "act_decrease_thermostat"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dec = tracker.get_slot("decrement")
+        if dec is None:
+            dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
+            return []
+        query = select([thermostat])
+        ResultProxy = connection.execute(query)
+        ResultSet = ResultProxy.fetchone()
+        current_temp = ResultSet["t_temp"]
+        new_temp = current_temp - dec
+        update_temp = thermostat.update().values(t_temp=new_temp)
+        engine.execute(update_temp)
+
+        msg = f"Updated the temperature of the thermostat to {new_temp}"
+        dispatcher.utter_message(text=msg)
+
+        return [SlotSet("temperature", new_temp)]
+
+class ActIncreaseThermostat(Action):
+    def name(self) -> Text:
+        return "act_increase_thermostat"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        inc = tracker.get_slot("increment")
+        if inc is None:
+            dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
+            return []
+        query = select([thermostat])
+        ResultProxy = connection.execute(query)
+        ResultSet = ResultProxy.fetchone()
+        current_temp = ResultSet["t_temp"]
+        new_temp = current_temp + inc
+        update_temp = thermostat.update().values(t_temp=new_temp)
+        engine.execute(update_temp)
+
+        msg = f"Updated the temperature of the thermostat to {new_temp}"
+        dispatcher.utter_message(text=msg)
+
+        return [SlotSet("temperature", new_temp)]
+
+class ActSetAlarm(Action):
+    def name(self) -> Text:
+        return "act_set_alarm"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        time = tracker.get_slot("time")
+        if time is None:
+            dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
+            return []
+        
+        
+        

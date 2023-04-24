@@ -67,4 +67,36 @@ stories:
   steps:
   - intent: close_entertainment
   - action: act_close_entertainment
-  
+
+- story: User sets the thermostat temperature
+  steps:
+  - intent: set_thermostat
+  - action: act_set_thermostat # dispatcher utters the new temperature
+
+- story: User decreases the thermostat temperature # return the new temperature value to the user. consider making a separate intent for checking current temperature
+  steps:
+  - intent: dec_thermostat
+  - action: act_decrease_thermostat
+
+
+- story: User increases the thermostat temperature
+  steps:
+  - intent: inc_thermostat
+  - action: act_increase_thermostat
+
+- story: User sets the alarm
+  steps:
+  - intent: set_alarm
+  - action: act_set_alarm
+
+- story: User checks air purification status
+  steps:
+  - intent: check_air_purification # conditionals in actions.py with numeric ranges
+  - action: act_check_air_purification
+
+- story: User turns on the boiler
+  steps:
+  - intent: turning_on_boiler
+  - action: act_turn_on_boiler
+
+# no need for utter messages for custome actions. dispatcher:
