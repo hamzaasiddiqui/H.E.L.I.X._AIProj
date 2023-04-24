@@ -17,13 +17,25 @@ intents:
   - open_entertainment_long
   - open_entertainment_short
   - close_entertainment
+  - set_alarm
+  - set_thermostat
+  - dec_thermostat
+  - inc_thermostat
+  - check_air_purification
+  - turning_on_boiler
+
 
 entities:
   - name
   - search
   - entertainment
   - source
-
+  - time
+  - temperature
+  - decrement
+  - increment
+  - start_time
+  - end_time
 
 slots:
   name:
@@ -52,6 +64,48 @@ slots:
     mappings:
     - type: from_entity
       entity: source
+      auto_fill: true
+
+  time:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: time
+      auto_fill: true
+
+  temperature:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: temperature
+      auto_fill: true
+
+  decrement:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: decrement
+      auto_fill: true
+
+  increment:
+    type: float
+    mappings:
+    - type: from_entity
+      entity: increment
+      auto_fill: true
+
+  start_time:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: start_time
+      auto_fill: true
+
+  end_time:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: end_time
       auto_fill: true
 
 

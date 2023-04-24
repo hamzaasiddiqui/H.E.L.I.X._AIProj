@@ -138,11 +138,7 @@ nlu:
     - Could you capture this image for me?
     - Take a selfie with me.
     - Can you take a picture of the menu?
-    - Take a picture of the product I'm interested in.
-
-#intent: camera_change_mode
-#  examples: |
-#    - 
+    - Take a picture of the product I'm interested in. 
 
 - intent: register_new_user
   examples: |
@@ -180,15 +176,63 @@ nlu:
 
 - intent: set_thermostat # temperature
   examples: |
+    - Set the temperature to [72](temperature) degrees.
+    - Set the thermostat to [68](temperature) degrees
+    - Change the temperature to [70](temperature) degrees.
+    - Adjust the temperature to [65](temperature) degrees.
+    - Set the heat to [75](temperature) degrees.
+    - Make the temperature [73](temperature) degrees.
+    - Set the AC to [60](temperature) degrees.
+    - Increase the temperature to [80](temperature) degrees.
+    - Reduce the temperature to [60](temperature) degrees.
+    - Set the thermostat to [72](temperature) degrees.
 
-- intent: dec_thermostat # decrement
+- intent: dec_thermostat # (decrement)
   examples: |
+    - Can you decrease the thermostat by [2](decrement) degrees?
+    - Please lower the temperature by [3](decrement) degrees.
+    - I'm feeling too warm, can you reduce the thermostat by [2](decrement) degrees?
+    - The room is getting stuffy, can you decrement the thermostat by [1](decrement) degree?
+    - Could you turn down the temperature by [5](decrement) degrees?
+    - Decrease the thermostat by [4](decrement) degrees.
+    - Please reduce the temperature by [2](decrement) degrees.
+    - Lower the temperature by [3](decrement) degrees.
+    - Can you decrement the thermostat by [1](decrement) degree?
 
 - intent: inc_thermostat #increment
   examples: |
+    - Can you increase the thermostat by [2](increment) degrees?
+    - Please raise the temperature by [3](increment) degrees.
+    - I'm feeling too cold, can you increment the thermostat by [2](increment) degrees?
+    - The room is getting chilly, can you increase the thermostat by [1](increment) degree?
+    - Could you turn up the temperature by [5](increment) degrees?
+    - Increase the thermostat by [4](increment) degrees.
+    - Please raise the temperature by [2](increment) degrees.
+    - Increase the temperature by [3](increment) degrees.
+    - Can you increment the thermostat by [1](increment) degree?
 
 - intent: check_air_purification #function will return into slot (not entity) --> purity_level
   examples: |
+    - I'm curious about the air quality, can you tell me the air purification level?
+    - How well is the air being filtered right now?
+    - Can you provide information on the air quality in the room?
+    - What is the level of air pollution in the room?
+    - Is the air purification system removing allergens effectively?
+    - How clean is the air in the room right now?
+    - Can you check the level of pollutants in the air?
+    - I'm concerned about the air quality, could you tell me the current air purification level?
+    - Can you give me an update on the air purification level?
+    - Is the air being purified to a healthy level?
 
-- intent: schedule_boiler # start_time, end_time
+- intent: turning_on_boiler # start_time, end_time
   examples: |
+    - Can you turn on the boiler from [7 pm](start_time) to [9 pm](end_time)?
+    - I want the boiler to be turned on from [6 am](start_time) to [8 am](end_time).
+    - Please start the boiler at [4 pm](start_time) and turn it off at [6 pm](end_time).
+    - Can you turn on the boiler at [6 pm](start_time) and keep it running until [10 pm](end_time)?
+    - Start the boiler at [8 am](start_time) and stop it at [10 am](end_time), please.
+    - Please schedule the boiler to turn on from [5 pm](start_time) to [7 pm](end_time).
+    - I want the boiler to run from [6 am](start_time) to [8 am](end_time).
+    - Can you turn on the boiler at [5 pm](start_time) and turn it off at [7 pm](end_time)?
+    - Schedule the boiler to start at [7 am](start_time) and stop at [9 am](end_time).
+    - Turn on the boiler from [9 pm](start_time) to [11 pm](end_time) every night.+
