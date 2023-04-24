@@ -32,7 +32,7 @@ nlu:
     - bye bye
     - see you later
 
-- intent: supply_name
+- intent: supply_name # name
   examples: |
     - My name is [Hamza](name)
     - name: [Hamza](name)
@@ -83,7 +83,7 @@ nlu:
     - open the door
     - door needs to be opened
 
-- intent: search_for
+- intent: search_for # search
   examples: |
     - what is [the time](search)
     - give me the [weather forecast](search)
@@ -95,7 +95,7 @@ nlu:
 
 
 
-- intent: open_entertainment_long
+- intent: open_entertainment_long #entertainment, source
   examples: |
     - Play [Breaking Bad](entertainment) on [Netflix](source)
     - Watch [The Crown](entertainment) on [Amazon Prime](source)
@@ -138,7 +138,11 @@ nlu:
     - Could you capture this image for me?
     - Take a selfie with me.
     - Can you take a picture of the menu?
-    - Take a picture of the product I'm interested in. 
+    - Take a picture of the product I'm interested in.
+
+#intent: camera_change_mode
+#  examples: |
+#    - 
 
 - intent: register_new_user
   examples: |
@@ -161,7 +165,7 @@ nlu:
     - How can I update my credentials?
     - Change my name registered on this account.
 
-- intent: set_alarm
+- intent: set_alarm # time
   examples: |
     - Set an alarm for [6 AM](time).
     - Can you set my alarm for [7:30 in the morning](time), please?
@@ -174,20 +178,17 @@ nlu:
     - I want to set an alarm for [5:15 AM](time), can you help me with that?
     - Set an alarm for [11:15 PM](time) tonight.
 
-- intent: set_thermostat
+- intent: set_thermostat # temperature
   examples: |
 
-- intent: dec_thermostat
+- intent: dec_thermostat # decrement
   examples: |
 
-- intent: inc_thermostat
+- intent: inc_thermostat #increment
   examples: |
 
-- intent: check_air_purification
+- intent: check_air_purification #function will return into slot (not entity) --> purity_level
   examples: |
 
-- intent: schedule_boiler
-  examples: |
-
-- intent: smart_payment
+- intent: schedule_boiler # start_time, end_time
   examples: |
