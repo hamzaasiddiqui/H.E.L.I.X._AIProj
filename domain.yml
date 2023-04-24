@@ -1,0 +1,107 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - bot_challenge
+  - supply_name
+
+  - turn_off_lights
+  - turn_on_lights
+  - lock_door
+  - unlock_door
+  - search_for
+  - take_snap
+  - register_new_user
+  - update_information
+  - open_entertainment_long
+  - open_entertainment_short
+  - close_entertainment
+
+entities:
+  - name
+  - search
+  - entertainment
+  - source
+
+
+slots:
+  name:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: name
+      auto_fill: true
+
+  search:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: search
+      auto_fill: true
+
+  entertainment:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: entertainment
+      auto_fill: true
+
+  source:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: source
+      auto_fill: true
+
+
+actions:
+  - act_lock_door
+  - act_unlock_door
+  - act_light_off
+  - act_light_on
+  - act_open_entertainment
+  - act_close_entertainment
+
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_ask_for_name:
+  - text: "Hello! Could you tell me your name"
+
+  utter_acknowledge_provided_info:
+  - text: "Thanks {name}!"
+
+  utter_turning_lights_on:
+  - text: "Lights turned on!"
+
+  utter_turning_lights_off:
+  - text: "Lights turned off!"
+
+  utter_locking_door:
+  - text: "Door Locked"
+
+  utter_unlocking_door:
+  - text: "Door unlocked"
+
+  utter_search:
+  - text: "Hope these results help: https://www.google.com/search?q={search}"
+
+  utter_ask_for_source:
+  - text: "What platform should I open?"
+
+  utter_ask_for_entertainment:
+  - text: "What do you want to watch?"
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
