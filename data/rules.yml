@@ -21,3 +21,12 @@ rules:
   steps:
   - intent: inc_thermostat
   - action: action_increase_thermostat
+
+#- rule: opening entertainment short
+#  steps:
+#  - intent: open_entertainment_short
+#  - action: utter_ask_for_source
+#  - intent: give_source
+#  - action: utter_ask_for_entertainment
+#  - intent: give_entertainment
+#  - action: action_open_entertainment

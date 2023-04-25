@@ -19,6 +19,8 @@ intents:
 - turn_on_lights
 - turning_on_boiler
 - unlock_door
+- give_source
+- give_entertainment
 entities:
 - name
 - search

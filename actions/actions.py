@@ -180,7 +180,7 @@ class ActOpenEntertainment(Action):
         source = tracker.get_slot("source")
         msg = ""
         ent = ["netflix", "hulu", "youtube", "spotify", "disneyplus"]
-        if entertainment.lower() in ent:
+        if source.lower() in ent:
             update_tv = smart_tv.update().values(s_app=source, s_search=entertainment, s_running=1)
             engine.execute(update_tv)
             msg = f"sure, opening {source} with {entertainment}"
@@ -239,7 +239,7 @@ class ActDecreaseThermostat(Action):
         ResultProxy = connection.execute(query)
         ResultSet = ResultProxy.fetchone()
         current_temp = ResultSet["t_temp"]
-        new_temp = current_temp - dec
+        new_temp = float(current_temp) - float(dec)
         update_temp = thermostat.update().values(t_temp=new_temp)
         engine.execute(update_temp)
 
@@ -262,7 +262,7 @@ class ActIncreaseThermostat(Action):
         ResultProxy = connection.execute(query)
         ResultSet = ResultProxy.fetchone()
         current_temp = ResultSet["t_temp"]
-        new_temp = current_temp + inc
+        new_temp = float(current_temp) + float(inc)
         update_temp = thermostat.update().values(t_temp=new_temp)
         engine.execute(update_temp)
 
@@ -281,7 +281,7 @@ class ActSetAlarm(Action):
         if time is None:
             dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
             return []
-        query = db.insert(alarm).values(a_time=time) 
+        query = alarm.insert().values(a_time=time) 
         engine.execute(query)
         msg = f"alarm has been set for {time}"
         dispatcher.utter_message(text=msg)
