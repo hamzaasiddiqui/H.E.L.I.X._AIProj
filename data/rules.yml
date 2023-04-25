@@ -12,8 +12,12 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Supplying name
+- rule: User decreases the thermostat temperature 
   steps:
-  - action: utter_ask_for_name
-  - intent: supply_name
-  - action: utter_acknowledge_provided_info
+  - intent: dec_thermostat
+  - action: action_decrease_thermostat
+
+- rule: User increases the thermostat temperature
+  steps:
+  - intent: inc_thermostat
+  - action: action_increase_thermostat

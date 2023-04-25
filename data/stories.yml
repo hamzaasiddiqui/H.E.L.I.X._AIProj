@@ -15,13 +15,13 @@ stories:
 - story: turn off the lights
   steps:
   - intent: turn_off_lights
-  - action: act_light_off
+  - action: action_light_off
   - action: utter_turning_lights_off
 
 - story: turn on the lights
   steps:
   - intent: turn_on_lights
-  - action: act_light_on
+  - action: action_light_on
   - action: utter_turning_lights_on
 
 
@@ -29,13 +29,13 @@ stories:
 - story: lock the smart door
   steps:
   - intent: lock_door
-  - action: act_lock_door
+  - action: action_lock_door
   - action: utter_locking_door
 
 - story: unlock the smart door
   steps:
   - intent: unlock_door
-  - action: act_unlock_door
+  - action: action_unlock_door
   - action: utter_unlocking_door
 
 
@@ -54,49 +54,51 @@ stories:
 - story: opening entertainment long
   steps:
   - intent: open_entertainment_long
-  - action: act_open_entertainment
+  - action: action_open_entertainment
 
 - story: opening entertainment short
   steps:
   - intent: open_entertainment_short
   - action: utter_ask_for_source
   - action: utter_ask_for_entertainment
-  - action: act_open_entertainment
+  - action: action_open_entertainment
 
 - story: closing entertainment
   steps:
   - intent: close_entertainment
-  - action: act_close_entertainment
+  - action: action_close_entertainment
 
 - story: User sets the thermostat temperature
   steps:
   - intent: set_thermostat
-  - action: act_set_thermostat # dispatcher utters the new temperature
+  - action: action_set_thermostat
 
-- story: User decreases the thermostat temperature # return the new temperature value to the user. consider making a separate intent for checking current temperature
+- story: User decreases the thermostat temperature 
   steps:
   - intent: dec_thermostat
-  - action: act_decrease_thermostat
+  - action: action_decrease_thermostat
 
 
 - story: User increases the thermostat temperature
   steps:
   - intent: inc_thermostat
-  - action: act_increase_thermostat
+  - action: action_increase_thermostat
 
 - story: User sets the alarm
   steps:
   - intent: set_alarm
-  - action: act_set_alarm
+  - action: action_set_alarm
 
 - story: User checks air purification status
   steps:
-  - intent: check_air_purification # conditionals in actions.py with numeric ranges
-  - action: act_check_air_purification
+  - intent: check_air_purification
+  - action: action_check_air_purification
 
 - story: User turns on the boiler
   steps:
   - intent: turning_on_boiler
-  - action: act_turn_on_boiler
-
-# no need for utter messages for custome actions. dispatcher:
+  - action: action_turn_on_boiler
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
