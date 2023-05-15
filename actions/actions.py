@@ -5,21 +5,8 @@
 # https://rasa.com/docs/rasa/custom-actions
 #
 #
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
 
-'''Forms
-Better intent examples
+'''Better intent examples
 More stories and rules
 Config.yml
 Training stories more'''
@@ -73,7 +60,21 @@ thermostat = Table(
 
 alarm = Table(
     'alarm', meta,
-    Column('a_time', VARCHAR)
+    Column('a_time', VARCHAR),
+    extend_existing=True
+)
+
+air_quality = Table(
+    'air_quality', meta,
+    Column("purity_index", Float),
+    extend_existing=True
+)
+
+boiler = Table(
+    'boiler', meta,
+    Column('start_time', VARCHAR),
+    Column('end_time', VARCHAR),
+    extend_existing=True
 )
 
 meta.create_all(engine)
@@ -97,11 +98,16 @@ tv = smart_tv.insert().values(s_app="None", s_search="None", s_running=0)
 therm = thermostat.insert().values(t_temp='25.0')
 #engine.execute(therm)
 
+air = air_quality.insert().values(purity_index=50)
+#engine.execute(air)
+
+boil = boiler.insert().values(start_time="None", end_time="None")
+#engine.execute(boil)
 
 
 class ActLockDoor(Action):
     def name(self) -> Text:
-        return "act_lock_door"
+        return "action_lock_door"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -117,7 +123,7 @@ class ActLockDoor(Action):
     
 class ActUnlockDoor(Action):
     def name(self) -> Text:
-        return "act_unlock_door"
+        return "action_unlock_door"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -133,7 +139,7 @@ class ActUnlockDoor(Action):
     
 class ActLightOn(Action):
     def name(self) -> Text:
-        return "act_light_on"
+        return "action_light_on"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -149,7 +155,7 @@ class ActLightOn(Action):
     
 class ActLightOff(Action):
     def name(self) -> Text:
-        return "act_light_off"
+        return "action_light_off"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -165,7 +171,7 @@ class ActLightOff(Action):
     
 class ActOpenEntertainment(Action):
     def name(self) -> Text:
-        return "act_open_entertainment"
+        return "action_open_entertainment"
     
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -174,7 +180,7 @@ class ActOpenEntertainment(Action):
         source = tracker.get_slot("source")
         msg = ""
         ent = ["netflix", "hulu", "youtube", "spotify", "disneyplus"]
-        if entertainment.lower() in ent:
+        if source.lower() in ent:
             update_tv = smart_tv.update().values(s_app=source, s_search=entertainment, s_running=1)
             engine.execute(update_tv)
             msg = f"sure, opening {source} with {entertainment}"
@@ -186,7 +192,7 @@ class ActOpenEntertainment(Action):
     
 class ActCloseEntertainment(Action):
     def name(self) -> Text:
-        return "act_close_entertainment"
+        return "action_close_entertainment"
     
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -200,7 +206,7 @@ class ActCloseEntertainment(Action):
     
 class ActSetThermostat(Action):
     def name(self) -> Text:
-        return "act_set_thermostat"
+        return "action_set_thermostat"
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -221,7 +227,7 @@ class ActSetThermostat(Action):
     
 class ActDecreaseThermostat(Action):
     def name(self) -> Text:
-        return "act_decrease_thermostat"
+        return "action_decrease_thermostat"
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -233,7 +239,7 @@ class ActDecreaseThermostat(Action):
         ResultProxy = connection.execute(query)
         ResultSet = ResultProxy.fetchone()
         current_temp = ResultSet["t_temp"]
-        new_temp = current_temp - dec
+        new_temp = float(current_temp) - float(dec)
         update_temp = thermostat.update().values(t_temp=new_temp)
         engine.execute(update_temp)
 
@@ -244,7 +250,7 @@ class ActDecreaseThermostat(Action):
 
 class ActIncreaseThermostat(Action):
     def name(self) -> Text:
-        return "act_increase_thermostat"
+        return "action_increase_thermostat"
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -256,7 +262,7 @@ class ActIncreaseThermostat(Action):
         ResultProxy = connection.execute(query)
         ResultSet = ResultProxy.fetchone()
         current_temp = ResultSet["t_temp"]
-        new_temp = current_temp + inc
+        new_temp = float(current_temp) + float(inc)
         update_temp = thermostat.update().values(t_temp=new_temp)
         engine.execute(update_temp)
 
@@ -267,7 +273,7 @@ class ActIncreaseThermostat(Action):
 
 class ActSetAlarm(Action):
     def name(self) -> Text:
-        return "act_set_alarm"
+        return "action_set_alarm"
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -275,6 +281,45 @@ class ActSetAlarm(Action):
         if time is None:
             dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
             return []
-        
-        
+        query = alarm.insert().values(a_time=time) 
+        engine.execute(query)
+        msg = f"alarm has been set for {time}"
+        dispatcher.utter_message(text=msg)
+
+        return []
+    
+
+class ActCheckAirPurification(Action):
+    def name(self) -> Text:
+        return "action_check_air_purification"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        query = select([air_quality])
+        ResultProxy = connection.execute(query)
+        ResultSet = ResultProxy.fetchone()
+        purity = ResultSet["purity_index"]
+        msg = f"The current air purity level is {purity}"
+        dispatcher.utter_message(text=msg)
+
+        return []
+    
+class ActTurnOnBoiler(Action):
+    def name(self) -> Text:
+        return "action_turn_on_boiler"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        start = tracker.get_slot("start_time")
+        end = tracker.get_slot("end_time")
+
+        if start is None or end is None:
+            dispatcher.utter_message(text="Sorry I encountered an issue. Please try again later")
+            return []
+        update_boiler = boiler.update().values(start_time=start, end_time=end)
+        engine.execute(update_boiler)
+        msg = f"The boiler will run from {start} to {end}"
+        dispatcher.utter_message(text=msg)
+
+        return[]
         
